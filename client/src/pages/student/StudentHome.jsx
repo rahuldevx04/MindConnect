@@ -60,16 +60,17 @@ function StudentHome() {
           return;
 
         const response =
-          await axios.get(
-            `import.meta.env.VITE_API_URL/api/posts/user/${user.id}`
-          );
+  await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/posts/user/${user.id}`
+  );
 
-        setPosts(response.data);
+const postsData = Array.isArray(response.data)
+  ? response.data
+  : [];
 
-        calculateAnalytics(
-          response.data
-        );
+setPosts(postsData);
 
+calculateAnalytics(postsData);
       } catch (error) {
 
         console.log(error);
@@ -91,15 +92,19 @@ function StudentHome() {
 
       const usersResponse =
         await axios.get(
-          "import.meta.env.VITE_API_URL/api/admin/users"
-        );
+  `${import.meta.env.VITE_API_URL}/api/admin/users`
+);
 
-      const currentUser =
-        usersResponse.data.find(
-          (u) =>
-            u.clerk_id ===
-            user.id
-        );
+
+      const users = Array.isArray(usersResponse.data)
+  ? usersResponse.data
+  : [];
+console.log("Users API:", usersResponse.data);
+console.log("Assignments API:", assignmentsResponse.data);
+const currentUser =
+  users.find(
+    (u) => u.clerk_id === user.id
+  );
 
       if (!currentUser) {
 
@@ -115,15 +120,18 @@ function StudentHome() {
 
       const assignmentsResponse =
         await axios.get(
-          "import.meta.env.VITE_API_URL/api/admin/assignments"
-        );
+  `${import.meta.env.VITE_API_URL}/api/admin/assignments`
+);
 
-      const found =
-        assignmentsResponse.data.find(
-          (assignment) =>
-            assignment.student?.id ===
-            currentUser.id
-        );
+      const assignments = Array.isArray(assignmentsResponse.data)
+  ? assignmentsResponse.data
+  : [];
+
+const found =
+  assignments.find(
+    (assignment) =>
+      assignment.student?.id === currentUser.id
+  );
 
       if (found) {
 
