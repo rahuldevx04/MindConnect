@@ -109,8 +109,8 @@ function Navbar({
         try {
 
           const res =
-            await axios.get(
-              `http://localhost:5000/api/chat/unread/${user.id}/${role}`
+            axios.get(
+  `${import.meta.env.VITE_API_URL}/api/chat/unread/${user.id}/${role}`
             );
 
           setUnreadCount(
