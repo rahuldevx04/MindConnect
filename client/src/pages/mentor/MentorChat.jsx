@@ -49,8 +49,8 @@ function MentorChat() {
 
         const res =
           await axios.get(
-            `http://localhost:5000/api/chat/mentor-students/${user.id}`
-          );
+  `${import.meta.env.VITE_API_URL}/api/chat`
+);
 
         setMentor(
           res.data.mentor
@@ -81,7 +81,7 @@ function MentorChat() {
 
       const res =
         await axios.get(
-          `http://localhost:5000/api/chat/student-unread/${mentor.id}`
+          `${import.meta.env.VITE_API_URL}/api/chat/student-unread/${mentor.id}`
         );
 
       setUnreadCounts(
@@ -111,7 +111,7 @@ function MentorChat() {
           return;
 
         await axios.put(
-          "http://localhost:5000/api/chat/mark-read",
+          `${import.meta.env.VITE_API_URL}/api/chat/mark-read`,
           {
             student_id:
               studentId,
@@ -149,7 +149,7 @@ const loadMessages =
 
       const res =
         await axios.get(
-          `http://localhost:5000/api/chat/${student.id}/${mentor.id}`
+          `${import.meta.env.VITE_API_URL}/api/chat/${student.id}/${mentor.id}`
         );
 
       setMessages(
@@ -190,7 +190,7 @@ const loadMessages =
       try {
 
         await axios.post(
-          "http://localhost:5000/api/chat",
+  `${import.meta.env.VITE_API_URL}/api/chat`,
           {
             student_id:
               selectedStudent.id,

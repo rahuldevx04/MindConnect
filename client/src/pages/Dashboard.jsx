@@ -25,8 +25,8 @@ function Dashboard() {
         console.log(token);
 
         const response =
-          await axios.post(
-            "http://localhost:5000/api/auth/sync-user",
+          await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
             {},
             {
               headers: {

@@ -45,7 +45,7 @@ const messagesEndRef =
       try {
 
         await axios.put(
-          "http://localhost:5000/api/chat/mark-read",
+          "import.meta.env.VITE_API_URL/api/chat/mark-read",
           {
             student_id:
               studentId,
@@ -80,7 +80,7 @@ const messagesEndRef =
 
         const info =
           await axios.get(
-            `http://localhost:5000/api/chat/student-info/${user.id}`
+            `import.meta.env.VITE_API_URL/api/chat/student-info/${user.id}`
           );
 
         setStudent(
@@ -93,7 +93,7 @@ const messagesEndRef =
 
         const chat =
           await axios.get(
-            `http://localhost:5000/api/chat/${info.data.student.id}/${info.data.mentor.id}`
+            `import.meta.env.VITE_API_URL/api/chat/${info.data.student.id}/${info.data.mentor.id}`
           );
 
         setMessages(
@@ -134,7 +134,7 @@ const messagesEndRef =
       try {
 
         await axios.post(
-          "http://localhost:5000/api/chat",
+          "import.meta.env.VITE_API_URL/api/chat",
           {
             student_id:
               student.id,

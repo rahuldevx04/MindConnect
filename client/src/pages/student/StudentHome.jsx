@@ -61,7 +61,7 @@ function StudentHome() {
 
         const response =
           await axios.get(
-            `http://localhost:5000/api/posts/user/${user.id}`
+            `import.meta.env.VITE_API_URL/api/posts/user/${user.id}`
           );
 
         setPosts(response.data);
@@ -91,7 +91,7 @@ function StudentHome() {
 
       const usersResponse =
         await axios.get(
-          "http://localhost:5000/api/admin/users"
+          "import.meta.env.VITE_API_URL/api/admin/users"
         );
 
       const currentUser =
@@ -115,7 +115,7 @@ function StudentHome() {
 
       const assignmentsResponse =
         await axios.get(
-          "http://localhost:5000/api/admin/assignments"
+          "import.meta.env.VITE_API_URL/api/admin/assignments"
         );
 
       const found =
@@ -262,8 +262,8 @@ function StudentHome() {
 
       try {
 
-        await axios.post(
-          "http://localhost:5000/api/posts",
+        await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/posts`,
           {
             user_id:
               user.id,

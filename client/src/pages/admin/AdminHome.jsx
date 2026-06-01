@@ -16,7 +16,8 @@ function AdminHome() {
   // FETCH USERS
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/users");
+      const response = await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/admin/users`);
 
       setUsers(response.data);
     } catch (error) {
@@ -28,7 +29,7 @@ function AdminHome() {
   const fetchAssignments = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/admin/assignments",
+        `${import.meta.env.VITE_API_URL}/api/admin/assignments`,
       );
 
       setAssignments(response.data);
@@ -46,7 +47,7 @@ function AdminHome() {
   // UPDATE ROLE
   const updateRole = async (id, role) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/users/${id}`, { role });
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { role });
 
       fetchUsers();
     } catch (error) {
@@ -57,7 +58,7 @@ function AdminHome() {
   // DELETE USER
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/users/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`);
 
       fetchUsers();
     } catch (error) {
@@ -70,7 +71,7 @@ function AdminHome() {
     if (mentor_id === "default") return;
 
     try {
-      await axios.post("http://localhost:5000/api/admin/assign-mentor", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/assign-mentor`, {
         student_id,
         mentor_id,
       });
@@ -84,7 +85,7 @@ function AdminHome() {
   // REMOVE ASSIGNMENT
   const removeAssignment = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/assignments/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/assignments/${id}`);
 
       fetchAssignments();
     } catch (error) {

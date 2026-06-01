@@ -73,7 +73,7 @@ function MentorHome() {
     if (!user?.id) return;
 
     const response = await axios.get(
-      `http://localhost:5000/api/posts/mentor/${user.id}`
+      `${import.meta.env.VITE_API_URL}/api/posts/mentor/${user.id}`
     );
 
     console.log("API DATA:", response.data);

@@ -33,8 +33,8 @@ function RoleRedirect() {
             await getToken();
 
           // SYNC USER TO DATABASE
-          await axios.post(
-            "http://localhost:5000/api/auth/sync-user",
+          await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
             {},
             {
               headers: {
@@ -47,7 +47,7 @@ function RoleRedirect() {
           // GET CURRENT USER
           const response =
             await axios.get(
-              "http://localhost:5000/api/users/me",
+              `${import.meta.env.VITE_API_URL}/api/users/me`,
               {
                 headers: {
                   Authorization:

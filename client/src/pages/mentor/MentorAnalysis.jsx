@@ -98,8 +98,8 @@ function MentorAnalysis() {
         return;
 
       const response =
-        await axios.get(
-          `http://localhost:5000/api/posts/mentor/${user.id}`
+       axios.get(
+  `${import.meta.env.VITE_API_URL}/api/posts/mentor/${user.id}`
         );
 
       const postsData =
