@@ -209,11 +209,11 @@ const loadMessages =
 
   // loadUnreadCounts();
 
-  const interval =
-    setInterval(
-      loadUnreadCounts,
-      2000
-    );
+  // const interval =
+  //   setInterval(
+  //     loadUnreadCounts,
+  //     2000
+  //   );
 
   return () =>
     clearInterval(
