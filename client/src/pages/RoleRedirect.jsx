@@ -10,25 +10,44 @@ function RoleRedirect() {
   useEffect(() => {
     const checkUser = async () => {
       try {
+        console.log("STEP 1");
+
         const token = await getToken();
 
-        console.log("TOKEN:", token);
+        console.log("TOKEN:");
+        console.log(token);
 
-        // SYNC USER TO DATABASE
-await axios.post(
-  `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
-  {},
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+        console.log("API URL:");
+        console.log(import.meta.env.VITE_API_URL);
 
-        console.log("User synced successfully");
+        if (!token) {
+          console.log("No token found");
+          navigate("/");
+          return;
+        }
 
-        // GET CURRENT USER
-        const response = await axios.get(
+        // ==========================
+        // SYNC USER
+        // ==========================
+
+        const syncResponse = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("USER SYNCED:");
+        console.log(syncResponse.data);
+
+        // ==========================
+        // GET USER FROM DATABASE
+        // ==========================
+
+        const userResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/users/me`,
           {
             headers: {
@@ -38,31 +57,46 @@ await axios.post(
         );
 
         console.log("USER DATA:");
-        console.log(response.data);
+        console.log(userResponse.data);
 
-        const role = response.data?.role;
+        const role = userResponse.data?.role
+          ?.trim()
+          ?.toLowerCase();
 
-        console.log("ROLE:", role);
+        console.log("ROLE:");
+        console.log(role);
 
-        if (role === "student") {
-          navigate("/student-home");
-        } else if (role === "mentor") {
+        // ==========================
+        // REDIRECT BASED ON ROLE
+        // ==========================
+
+        if (role === "mentor") {
+          console.log("Redirecting to Mentor");
+
           navigate("/mentor-home");
         } else if (role === "admin") {
+          console.log("Redirecting to Admin");
+
           navigate("/admin-home");
         } else {
-          console.log("Unknown role, redirecting to student");
+          console.log("Redirecting to Student");
+
           navigate("/student-home");
         }
       } catch (error) {
         console.error("ROLE REDIRECT ERROR:");
 
         if (error.response) {
-          console.log("STATUS:", error.response.status);
-          console.log("DATA:", error.response.data);
+          console.log("STATUS:");
+          console.log(error.response.status);
+
+          console.log("DATA:");
+          console.log(error.response.data);
         } else {
           console.log(error);
         }
+
+        navigate("/");
       }
     };
 
