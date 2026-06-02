@@ -45,9 +45,9 @@ const loadStudents = async () => {
   try {
     if (!user?.id) return;
 
-    const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/api/chat/${user.id}`
-    );
+   const res = await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/chat/mentor-students/${user.id}`
+);
 
     console.log("CHAT DATA:");
     console.log(res.data);
