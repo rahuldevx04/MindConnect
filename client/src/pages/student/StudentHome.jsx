@@ -80,80 +80,55 @@ calculateAnalytics(postsData);
     };
 
   // CHECK MENTOR
- const checkMentor =
-  async () => {
+ const checkMentor = async () => {
+  try {
+    if (!user) return;
 
-    try {
+    const usersResponse = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/admin/users`
+    );
 
-      if (!user)
-        return;
+    const users = Array.isArray(usersResponse.data)
+      ? usersResponse.data
+      : [];
 
-      // Get current user from DB
+    const currentUser = users.find(
+      (u) => u.clerk_id === user.id
+    );
 
-      const usersResponse =
-        await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/admin/users`
-);
-
-
-      const users = Array.isArray(usersResponse.data)
-  ? usersResponse.data
-  : [];
-console.log("Users API:", usersResponse.data);
-console.log("Assignments API:", assignmentsResponse.data);
-const currentUser =
-  users.find(
-    (u) => u.clerk_id === user.id
-  );
-
-      if (!currentUser) {
-
-        setMentorStatus(
-          "Not Connected"
-        );
-
-        return;
-
-      }
-
-      // Get assignments
-
-      const assignmentsResponse =
-        await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/admin/assignments`
-);
-
-      const assignments = Array.isArray(assignmentsResponse.data)
-  ? assignmentsResponse.data
-  : [];
-
-const found =
-  assignments.find(
-    (assignment) =>
-      assignment.student?.id === currentUser.id
-  );
-
-      if (found) {
-
-        setMentorStatus(
-          `Connected - ${found.mentor?.name}`
-        );
-
-      } else {
-
-        setMentorStatus(
-          "Not Connected"
-        );
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
+    if (!currentUser) {
+      setMentorStatus("Not Connected");
+      return;
     }
 
-  };
+    const assignmentsResponse = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/admin/assignments`
+    );
+
+    const assignments = Array.isArray(assignmentsResponse.data)
+      ? assignmentsResponse.data
+      : [];
+
+    console.log("Users API:", users);
+    console.log("Assignments API:", assignments);
+
+    const found = assignments.find(
+      (assignment) =>
+        assignment.student?.id === currentUser.id
+    );
+
+    if (found && found.mentor) {
+      setMentorStatus(
+        `Connected - ${found.mentor.name}`
+      );
+    } else {
+      setMentorStatus("Not Connected");
+    }
+  } catch (error) {
+    console.log("MENTOR ERROR:");
+    console.log(error);
+  }
+};
 
   // ANALYTICS
   const calculateAnalytics =
