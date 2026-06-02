@@ -20,12 +20,12 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://mindconnect.vercel.app",
+      "https://mind-connect-gray.vercel.app",
+      "https://mind-connect-git-main-rahulrahul040105-8827s-projects.vercel.app",
     ],
     credentials: true,
   })
 );
-
 app.use(express.json());
 
 app.use(helmet());
