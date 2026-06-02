@@ -235,39 +235,35 @@ calculateAnalytics(postsData);
     }
 
   }, [user]);
+const submitPost = async () => {
+  if (!thought.trim()) return;
 
-  // SUBMIT POST
-  const submitPost =
-    async () => {
-
-      if (!thought)
-        return;
-
-      try {
-
-        await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/posts`,
-          {
-            user_id:
-              user.id,
-
-            content:
-              thought,
-          }
-        );
-
-        setThought("");
-
-        fetchPosts();
-
-      } catch (error) {
-
-        console.log(error);
-
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/posts`,
+      {
+        user_id: user.id,
+        content: thought,
       }
+    );
 
-    };
+    console.log("POST CREATED:");
+    console.log(response.data);
 
+    setThought("");
+
+    await fetchPosts();
+
+  } catch (error) {
+    console.log("POST ERROR:");
+
+    if (error.response) {
+      console.log(error.response.data);
+    } else {
+      console.log(error);
+    }
+  }
+};
   return (
 
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-teal-50">
