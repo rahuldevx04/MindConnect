@@ -412,26 +412,23 @@ const createPost = async (req, res) => {
   error,
 } = await supabase
   .from("posts")
-  .insert([
-    {
-      user_id: String(user_id),
+  .insert.insert([
+  {
+    user_id: String(user_id),
 
-      name,
+    name,
 
-      mentor_id,
+    mentor_id,
 
-      content,
+    content,
 
-      sentiment:
-        analysis.sentiment,
+    sentiment: analysis.sentiment,
 
-      mood_score:
-        analysis.moodScore,
+    mood_score: analysis.moodScore,
 
-      stress_level:
-        analysis.stressLevel,
-    },
-  ])
+    stress_level: analysis.stressLevel,
+  },
+])
   .select();
 // ==========================
 // GET USER POSTS
