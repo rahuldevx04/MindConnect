@@ -46,6 +46,14 @@ router.get(
   getMentorPosts
 );
 
+router.get("/test", (req, res) => {
+  res.json({
+    message: "Post route working",
+  });
+});
+
+router.post("/", createPost);
+
 
 module.exports =
   router;
