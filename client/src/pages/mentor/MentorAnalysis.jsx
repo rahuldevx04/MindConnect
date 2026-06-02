@@ -89,48 +89,46 @@ function MentorAnalysis() {
   // FETCH MENTOR POSTS
   // ====================================
 
- const fetchMentorData =
-  async () => {
+const fetchMentorData = async () => {
+  try {
+    if (!user?.id) return;
 
-    try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/posts/mentor/${user.id}`
+    );
 
-      if (!user?.id)
-        return;
+    console.log("MENTOR RESPONSE:");
+    console.log(response.data);
 
-      const response =
-       axios.get(
-  `${import.meta.env.VITE_API_URL}/api/posts/mentor/${user.id}`
-        );
+    const postsData =
+      response.data?.posts || [];
 
-      const postsData =
-        response.data.posts || [];
+    const totalStudents =
+      response.data?.totalStudents || 0;
 
-      const totalStudents =
-        response.data.totalStudents || 0;
+    setPosts(postsData);
 
-      setPosts(postsData);
+    calculateStats(
+      postsData,
+      totalStudents
+    );
 
-      calculateStats(
-        postsData,
-        totalStudents
-      );
+  } catch (error) {
+    console.log("MENTOR ERROR:");
 
-    } catch (error) {
-
+    if (error.response) {
+      console.log(error.response.data);
+    } else {
       console.log(error);
-
     }
+  }
+};
 
-  };
-  useEffect(() => {
-
-    if (user) {
-
-      fetchMentorData();
-
-    }
-
-  }, [user]);
+useEffect(() => {
+  if (user?.id) {
+    fetchMentorData();
+  }
+}, [user?.id]);
 
   // ====================================
   // CALCULATE STATS
