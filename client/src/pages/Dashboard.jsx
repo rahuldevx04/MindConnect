@@ -1,87 +1,34 @@
-import { useEffect } from "react";
-
-import axios from "axios";
-
-import {
-  useAuth,
-  UserButton,
-  SignOutButton,
-} from "@clerk/clerk-react";
+import { UserButton, SignOutButton } from "@clerk/clerk-react";
 
 function Dashboard() {
-
-  const { getToken, isSignedIn } =
-    useAuth();
-
-  useEffect(() => {
-
-    const syncUser = async () => {
-
-      try {
-
-        const token =
-          await getToken();
-
-        console.log(token);
-
-        const response =
-          await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
-            {},
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
-              },
-            }
-          );
-
-        console.log(response.data);
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-
-    };
-
-    if (isSignedIn) {
-
-      syncUser();
-
-    }
-
-  }, [isSignedIn]);
-
   return (
-
     <div className="min-h-screen bg-[#F5F3FF] p-10">
-
       <div className="flex justify-between items-center">
-
         <h1 className="text-3xl font-bold text-teal-600">
           Dashboard
         </h1>
 
         <div className="flex items-center gap-4">
-
           <UserButton />
 
           <SignOutButton>
-
-            <button className="bg-red-500 text-white px-4 py-2 rounded-xl">
+            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl">
               Logout
             </button>
-
           </SignOutButton>
-
         </div>
-
       </div>
 
-    </div>
+      <div className="mt-10 bg-white rounded-2xl shadow p-6">
+        <h2 className="text-xl font-semibold text-slate-700">
+          Welcome to MindConnect 👋
+        </h2>
 
+        <p className="mt-2 text-slate-500">
+          Your account has been authenticated successfully.
+        </p>
+      </div>
+    </div>
   );
 }
 
