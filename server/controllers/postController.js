@@ -259,9 +259,10 @@ const createPost = async (req, res) => {
   try {
 
     const {
-      user_id,
-      content,
-    } = req.body;
+  user_id,
+  name,
+  content,
+} = req.body;
 
     console.log("POST BODY:", req.body);
 

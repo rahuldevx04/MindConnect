@@ -240,13 +240,13 @@ const submitPost = async () => {
 
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/posts`,
-      {
-        user_id: user.id,
-        content: thought,
-      }
-    );
-
+  `${import.meta.env.VITE_API_URL}/api/posts`,
+  {
+    user_id: user.id,
+    name: user.fullName,
+    content: thought,
+  }
+);
     console.log("POST CREATED:");
     console.log(response.data);
 
@@ -298,7 +298,7 @@ const submitPost = async () => {
           <p className="text-slate-600 text-sm md:text-base mt-4 max-w-3xl leading-7">
 
             Track your emotional wellness,
-            share anonymous thoughts,
+            share thoughts,
             monitor stress levels,
             and connect with mentors for better mental wellbeing.
 
@@ -438,7 +438,7 @@ const submitPost = async () => {
 
               <CardTitle className="text-lg font-semibold text-slate-700">
 
-                Anonymous Posts
+                Your Posts
 
               </CardTitle>
 
@@ -460,7 +460,7 @@ const submitPost = async () => {
 
               <p className="text-slate-500 mt-3 text-sm leading-6">
 
-                Total anonymous thoughts shared
+                Total thoughts shared
                 on the platform.
 
               </p>
@@ -493,7 +493,7 @@ const submitPost = async () => {
 
             <p className="text-slate-600 text-sm leading-7">
 
-              Express your feelings anonymously.
+              Express your feelings freely.
               AI analyzes your thoughts to help improve emotional wellness support.
 
             </p>
@@ -515,11 +515,11 @@ const submitPost = async () => {
 
             <div className="flex justify-between items-center">
 
-              <Badge className="bg-cyan-500 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl">
+              {/* <Badge className="bg-cyan-500 hover:bg-cyan-500 text-white px-4 py-2 rounded-xl">
 
                 Anonymous Mode Enabled
 
-              </Badge>
+              </Badge> */}
 
               <Button
                 onClick={submitPost}
@@ -548,7 +548,7 @@ const submitPost = async () => {
 
               <h2 className="text-2xl md:text-3xl font-bold text-cyan-600">
 
-                Recent Anonymous Thoughts
+                Recent Thoughts
 
               </h2>
 
@@ -557,7 +557,7 @@ const submitPost = async () => {
                 View your latest emotional reflections,
                 AI mood analysis,
                 stress indicators,
-                and anonymous wellness activity.
+                and wellness activity.
 
               </p>
 
@@ -624,13 +624,13 @@ const submitPost = async () => {
 
                           <h3 className="text-lg font-bold text-slate-900">
 
-                            Anonymous Student
+                            {post.name}
 
                           </h3>
 
                           <p className="text-sm text-slate-500 mt-1">
 
-                            {post.anonymous_id}
+                            {post.name}
 
                           </p>
 
