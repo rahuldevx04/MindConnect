@@ -15,7 +15,7 @@ function RoleRedirect() {
         console.log("TOKEN:", token);
 
         // SYNC USER TO DATABASE
-  await axios.post(
+await axios.post(
   `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
   {},
   {
