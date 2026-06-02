@@ -121,7 +121,7 @@ const loadMessages =
         student.id
       );
 
-      await loadUnreadCounts();
+      // await loadUnreadCounts();
 
     } catch (error) {
 
@@ -207,7 +207,7 @@ const loadMessages =
   if (!mentor)
     return;
 
-  loadUnreadCounts();
+  // loadUnreadCounts();
 
   const interval =
     setInterval(
