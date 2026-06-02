@@ -41,63 +41,24 @@ function MentorChat() {
   // ======================================
   // LOAD ASSIGNED STUDENTS
   // ======================================
+const loadStudents = async () => {
+  try {
+    if (!user?.id) return;
 
-  const loadStudents =
-    async () => {
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/chat/${user.id}`
+    );
 
-      try {
+    console.log("CHAT DATA:");
+    console.log(res.data);
 
-        const res =
-          await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/chat`
-);
+    setMentor(res.data.mentor);
+    setStudents(res.data.students || []);
 
-        setMentor(
-          res.data.mentor
-        );
-
-        setStudents(
-          res.data.students
-        );
-
-      } catch (error) {
-
-        console.log(
-          "LOAD STUDENTS ERROR:",
-          error
-        );
-
-      }
-
-    };
-
-    const loadUnreadCounts =
-  async () => {
-
-    try {
-
-      if (!mentor)
-        return;
-
-      const res =
-        await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/chat/student-unread/${mentor.id}`
-        );
-
-      setUnreadCounts(
-        res.data || {}
-      );
-
-    } catch (error) {
-
-      console.log(
-        "UNREAD ERROR:",
-        error
-      );
-
-    }
-
-  };
+  } catch (error) {
+    console.log("LOAD STUDENTS ERROR:", error);
+  }
+};
   // ======================================
   // MARK AS READ
   // ======================================

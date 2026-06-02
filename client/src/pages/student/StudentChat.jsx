@@ -36,137 +36,119 @@ const messagesEndRef =
   // MARK MESSAGES READ
   // ======================================
 
-  const markAsRead =
-    async (
-      studentId,
-      mentorId
-    ) => {
+ const markAsRead = async (
+  studentId,
+  mentorId
+) => {
 
-      try {
+  try {
 
-        await axios.put(
-          "import.meta.env.VITE_API_URL/api/chat/mark-read",
-          {
-            student_id:
-              studentId,
-
-            mentor_id:
-              mentorId,
-
-            reader_role:
-              "student",
-          }
-        );
-
-      } catch (error) {
-
-        console.log(
-          "READ ERROR:",
-          error
-        );
-
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/chat/mark-read`,
+      {
+        student_id: studentId,
+        mentor_id: mentorId,
+        reader_role: "student",
       }
+    );
 
-    };
+  } catch (error) {
 
+    console.log(
+      "READ ERROR:",
+      error
+    );
+
+  }
+
+};
   // ======================================
   // LOAD CHAT
   // ======================================
 
-  const loadChat =
-    async () => {
+  const loadChat = async () => {
 
-      try {
+  try {
 
-        const info =
-          await axios.get(
-            `import.meta.env.VITE_API_URL/api/chat/student-info/${user.id}`
-          );
+    const info = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/chat/student-info/${user.id}`
+    );
 
-        setStudent(
-          info.data.student
-        );
+    setStudent(
+      info.data.student
+    );
 
-        setMentor(
-          info.data.mentor
-        );
+    setMentor(
+      info.data.mentor
+    );
 
-        const chat =
-          await axios.get(
-            `import.meta.env.VITE_API_URL/api/chat/${info.data.student.id}/${info.data.mentor.id}`
-          );
+    const chat = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/chat/${info.data.student.id}/${info.data.mentor.id}`
+    );
 
-        setMessages(
-          chat.data
-        );
+    setMessages(
+      chat.data
+    );
 
-        await markAsRead(
-          info.data.student.id,
-          info.data.mentor.id
-        );
+    await markAsRead(
+      info.data.student.id,
+      info.data.mentor.id
+    );
 
-      } catch (error) {
+  } catch (error) {
 
-        console.log(
-          "CHAT ERROR:",
-          error
-        );
+    console.log(
+      "CHAT ERROR:",
+      error
+    );
 
-      }
+  }
 
-    };
-
+};
   // ======================================
   // SEND MESSAGE
   // ======================================
 
-  const sendMessage =
-    async () => {
+ const sendMessage = async () => {
 
-      if (
-        !message.trim() ||
-        !student ||
-        !mentor
-      ) {
-        return;
+  if (
+    !message.trim() ||
+    !student ||
+    !mentor
+  ) {
+    return;
+  }
+
+  try {
+
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/chat`,
+      {
+        student_id: student.id,
+        mentor_id: mentor.id,
+        sender_id: student.id,
+        sender_role: "student",
+        message,
       }
+    );
 
-      try {
+    setMessage("");
 
-        await axios.post(
-          "import.meta.env.VITE_API_URL/api/chat",
-          {
-            student_id:
-              student.id,
+    await loadChat();
 
-            mentor_id:
-              mentor.id,
+  } catch (error) {
 
-            sender_id:
-              student.id,
+    console.log("SEND ERROR:");
 
-            sender_role:
-              "student",
+    if (error.response) {
+      console.log(error.response.data);
+    } else {
+      console.log(error);
+    }
 
-            message,
-          }
-        );
+  }
 
-        setMessage("");
-
-        loadChat();
-
-      } catch (error) {
-
-        console.log(
-          "SEND ERROR:",
-          error
-        );
-
-      }
-
-    };
-
+};
 
 
   // ======================================
