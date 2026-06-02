@@ -428,7 +428,7 @@ const calculateStats = (
 
                       <Badge className="bg-slate-100 text-slate-700 border-0 rounded-full">
 
-                        {post?.anonymous_id || "MC-0000"}
+                     {post?.name || "Student"}
 
                       </Badge>
 

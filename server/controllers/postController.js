@@ -117,143 +117,6 @@ const detectSentiment =
 // CREATE POST
 // ==========================
 
-const createPost = async (req, res) => {
-  console.log("================================");
-  console.log("CREATE POST HIT");
-  console.log(req.body);
-  console.log("================================");
-
-  try {
-    const { user_id, content } = req.body;
-
-    console.log("USER ID:", user_id);
-    console.log("CONTENT:", content);
-
-    // VALIDATION
-    if (!user_id || !content) {
-      return res.status(400).json({
-        error: "Missing fields",
-      });
-    }
-
-    // FIND STUDENT
-    const {
-      data: studentUser,
-      error: studentError,
-    } = await supabase
-      .from("users")
-      .select("id")
-      .eq("clerk_id", user_id)
-      .single();
-
-    console.log("STUDENT USER:");
-    console.log(studentUser);
-
-    console.log("STUDENT ERROR:");
-    console.log(studentError);
-
-    if (studentError || !studentUser) {
-      return res.status(400).json({
-        error: "Student not found",
-      });
-    }
-
-    // FIND ASSIGNED MENTOR
-    const {
-      data: assignment,
-      error: assignmentError,
-    } = await supabase
-      .from("mentor_assignments")
-      .select("mentor_id")
-      .eq("student_id", studentUser.id)
-      .single();
-
-    console.log("ASSIGNMENT:");
-    console.log(assignment);
-
-    console.log("ASSIGNMENT ERROR:");
-    console.log(assignmentError);
-
-    if (assignmentError || !assignment) {
-      return res.status(400).json({
-        error: "No mentor assigned to this student",
-      });
-    }
-
-    // FIND MENTOR
-    const {
-      data: mentorUser,
-      error: mentorError,
-    } = await supabase
-      .from("users")
-      .select("clerk_id")
-      .eq("id", assignment.mentor_id)
-      .single();
-
-    console.log("MENTOR USER:");
-    console.log(mentorUser);
-
-    console.log("MENTOR ERROR:");
-    console.log(mentorError);
-
-    if (mentorError || !mentorUser) {
-      return res.status(400).json({
-        error: "Mentor not found",
-      });
-    }
-
-    const mentor_id = mentorUser.clerk_id;
-
-    // NLP ANALYSIS
-    const analysis = detectSentiment(content);
-
-    const anonymous_id =
-      "MC-" +
-      Math.floor(1000 + Math.random() * 9000);
-
-    console.log("ANALYSIS:");
-    console.log(analysis);
-
-    // INSERT POST
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("posts")
-      .insert([
-        {
-          user_id: String(user_id),
-          mentor_id,
-          content,
-          sentiment: analysis.sentiment,
-          mood_score: analysis.moodScore,
-          stress_level: analysis.stressLevel,
-          anonymous_id,
-        },
-      ])
-      .select();
-
-    console.log("INSERT DATA:");
-    console.log(data);
-
-    console.log("INSERT ERROR:");
-    console.log(error);
-
-    if (error) {
-      return res.status(400).json(error);
-    }
-
-    return res.status(201).json(data);
-
-  } catch (error) {
-    console.log("FULL ERROR:");
-    console.log(error);
-
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
 
 const createPost = async (req, res) => {
   try {
@@ -396,12 +259,7 @@ const createPost = async (req, res) => {
     // RANDOM ID
     // ======================================
 
-    // const anonymous_id =
-    //   "MC-" +
-    //   Math.floor(
-    //     1000 +
-    //     Math.random() * 9000
-    //   );
+  
 
     // ======================================
     // INSERT POST
@@ -412,7 +270,7 @@ const createPost = async (req, res) => {
   error,
 } = await supabase
   .from("posts")
-  .insert.insert([
+  .insert([
   {
     user_id: String(user_id),
 
