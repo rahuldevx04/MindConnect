@@ -396,74 +396,43 @@ const createPost = async (req, res) => {
     // RANDOM ID
     // ======================================
 
-    const anonymous_id =
-      "MC-" +
-      Math.floor(
-        1000 +
-        Math.random() * 9000
-      );
+    // const anonymous_id =
+    //   "MC-" +
+    //   Math.floor(
+    //     1000 +
+    //     Math.random() * 9000
+    //   );
 
     // ======================================
     // INSERT POST
     // ======================================
 
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("posts")
-      .insert([
-        {
-          user_id:
-            String(user_id),
+   const {
+  data,
+  error,
+} = await supabase
+  .from("posts")
+  .insert([
+    {
+      user_id: String(user_id),
 
-          mentor_id,
+      name,
 
-          content,
+      mentor_id,
 
-          sentiment:
-            analysis.sentiment,
+      content,
 
-          mood_score:
-            analysis.moodScore,
+      sentiment:
+        analysis.sentiment,
 
-          stress_level:
-            analysis.stressLevel,
+      mood_score:
+        analysis.moodScore,
 
-          anonymous_id,
-        },
-      ])
-      .select();
-
-    if (error) {
-
-      console.log(
-        "INSERT ERROR:",
-        error
-      );
-
-      return res.status(400).json(
-        error
-      );
-
-    }
-
-    res.json(data);
-
-  } catch (error) {
-
-    console.log(
-      "FULL ERROR:"
-    );
-
-    console.log(error);
-
-    return res.status(500).json({
-      error: error.message,
-    });
-
-  }
-};
+      stress_level:
+        analysis.stressLevel,
+    },
+  ])
+  .select();
 // ==========================
 // GET USER POSTS
 // ==========================
