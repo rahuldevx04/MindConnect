@@ -30,6 +30,14 @@ function RoleRedirect() {
         // SYNC USER
         // ==========================
 
+        console.log("API URL:");
+console.log(import.meta.env.VITE_API_URL);
+
+const url = `${import.meta.env.VITE_API_URL}/api/auth/sync-user`;
+
+console.log("FINAL URL:");
+console.log(url);
+
         const syncResponse = await axios.post(
           `${import.meta.env.VITE_API_URL}/api/auth/sync-user`,
           {},
