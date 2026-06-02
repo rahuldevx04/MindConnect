@@ -299,7 +299,7 @@ const calculateStats = (
 
               <p className="text-slate-500 mt-4 leading-7 text-sm">
 
-                Total <p>{post.name}</p> student emotional thoughts shared.
+                Total student emotional thoughts shared.
 
               </p>
 
