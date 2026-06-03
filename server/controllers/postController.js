@@ -9,104 +9,125 @@ const vader =
 // NLP SENTIMENT DETECTION
 // ==========================
 
-const detectSentiment =
-  (text) => {
+const detectSentiment = (text) => {
 
-    const result =
-      vader
-        .SentimentIntensityAnalyzer
-        .polarity_scores(text);
+  const result =
+    vader.SentimentIntensityAnalyzer
+      .polarity_scores(text);
 
-    const score =
-      result.compound;
+  const score = result.compound;
 
-    // VERY NEGATIVE
-    if (score <= -0.5) {
+  const lowerText = text.toLowerCase();
 
-      return {
+  const crisisWords = [
+    "suicide",
+    "kill myself",
+    "end my life",
+    "die",
+    "hopeless",
+    "worthless"
+  ];
 
-        sentiment:
-          "negative",
+  const stressWords = [
+    "stressed",
+    "anxiety",
+    "anxious",
+    "panic",
+    "overwhelmed",
+    "burnout",
+    "depressed",
+    "sad",
+    "lonely",
+    "crying"
+  ];
 
-        moodScore:
-          20,
+  const positiveWords = [
+    "happy",
+    "great",
+    "amazing",
+    "excited",
+    "motivated",
+    "confident",
+    "peaceful",
+    "grateful"
+  ];
 
-        stressLevel:
-          "High",
+  const hasCrisis =
+    crisisWords.some(word =>
+      lowerText.includes(word)
+    );
 
-      };
+  const hasStress =
+    stressWords.some(word =>
+      lowerText.includes(word)
+    );
 
-    }
+  const hasPositive =
+    positiveWords.some(word =>
+      lowerText.includes(word)
+    );
 
-    // NEGATIVE
-    else if (score < 0) {
-
-      return {
-
-        sentiment:
-          "negative",
-
-        moodScore:
-          40,
-
-        stressLevel:
-          "Medium",
-
-      };
-
-    }
-
-    // VERY POSITIVE
-    else if (score >= 0.5) {
-
-      return {
-
-        sentiment:
-          "positive",
-
-        moodScore:
-          90,
-
-        stressLevel:
-          "Low",
-
-      };
-
-    }
-
-    // SLIGHT POSITIVE
-    else if (score > 0) {
-
-      return {
-
-        sentiment:
-          "positive",
-
-        moodScore:
-          70,
-
-        stressLevel:
-          "Low",
-
-      };
-
-    }
-
-    // NEUTRAL
+  // Crisis Detection
+  if (hasCrisis) {
     return {
-
-      sentiment:
-        "neutral",
-
-      moodScore:
-        50,
-
-      stressLevel:
-        "Medium",
-
+      sentiment: "negative",
+      moodScore: 5,
+      stressLevel: "Critical",
     };
+  }
 
+  // High Stress
+  if (hasStress && score < 0) {
+    return {
+      sentiment: "negative",
+      moodScore: 25,
+      stressLevel: "High",
+    };
+  }
+
+  // Very Negative
+  if (score <= -0.5) {
+    return {
+      sentiment: "negative",
+      moodScore: 20,
+      stressLevel: "High",
+    };
+  }
+
+  // Negative
+  if (score < 0) {
+    return {
+      sentiment: "negative",
+      moodScore: 40,
+      stressLevel: "Medium",
+    };
+  }
+
+  // Strong Positive
+  if (score >= 0.6 || hasPositive) {
+    return {
+      sentiment: "positive",
+      moodScore: 90,
+      stressLevel: "Low",
+    };
+  }
+
+  // Positive
+  if (score > 0) {
+    return {
+      sentiment: "positive",
+      moodScore: 75,
+      stressLevel: "Low",
+    };
+  }
+
+  // Neutral
+  return {
+    sentiment: "neutral",
+    moodScore: 55,
+    stressLevel: "Medium",
   };
+};
 
 
 // ==========================
