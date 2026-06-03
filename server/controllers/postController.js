@@ -41,7 +41,9 @@ const detectSentiment = (text) => {
     "can't go on",
     "life is pointless",
     "give up",
-    "end it all"
+    "end it all",
+    "self destruction",
+    "self sabotage",
   ];
 
   // ==========================
@@ -100,7 +102,11 @@ const detectSentiment = (text) => {
     "heartbroken",
     "toxic",
     "trauma",
-    "traumatized"
+    "traumatized",
+    "mindfucked",
+    "mind fucked",
+    "mind-fucked",
+    "mindfuck",
   ];
 
   // ==========================
