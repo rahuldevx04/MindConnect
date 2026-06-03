@@ -15,42 +15,182 @@ const detectSentiment = (text) => {
     vader.SentimentIntensityAnalyzer
       .polarity_scores(text);
 
-  const score = result.compound;
+  const score =
+    result.compound;
 
-  const lowerText = text.toLowerCase();
+  const lowerText =
+    text.toLowerCase();
+
+  // ==========================
+  // CRISIS WORDS
+  // ==========================
 
   const crisisWords = [
     "suicide",
+    "suicidal",
     "kill myself",
     "end my life",
+    "want to die",
     "die",
+    "self harm",
+    "self-harm",
+    "cut myself",
+    "worthless",
     "hopeless",
-    "worthless"
+    "no reason to live",
+    "can't go on",
+    "life is pointless",
+    "give up",
+    "end it all"
   ];
+
+  // ==========================
+  // STRESS / NEGATIVE WORDS
+  // ==========================
 
   const stressWords = [
     "stressed",
+    "stress",
     "anxiety",
     "anxious",
     "panic",
-    "overwhelmed",
     "burnout",
+    "burnt out",
+    "burned out",
     "depressed",
     "sad",
     "lonely",
-    "crying"
+    "crying",
+    "overwhelmed",
+    "exhausted",
+    "tired",
+    "worried",
+    "fear",
+    "afraid",
+    "nervous",
+    "frustrated",
+    "angry",
+    "upset",
+
+    // Gen Z / Millennials
+
+    "drained",
+    "mentally drained",
+    "emotionally drained",
+    "not okay",
+    "feeling low",
+    "broken",
+    "empty",
+    "dead inside",
+    "can't cope",
+    "can't handle",
+    "lost",
+    "numb",
+    "unmotivated",
+    "demotivated",
+    "overthinking",
+    "spiraling",
+    "falling apart",
+    "breakdown",
+    "messed up",
+    "stuck",
+    "isolated",
+    "ignored",
+    "rejected",
+    "heartbroken",
+    "toxic",
+    "trauma",
+    "traumatized"
   ];
+
+  // ==========================
+  // STUDENT / COLLEGE STRESS
+  // ==========================
+
+  const academicStressWords = [
+    "exam",
+    "exams",
+    "internal",
+    "internals",
+    "assignment",
+    "deadline",
+    "project",
+    "backlog",
+    "attendance",
+    "placement",
+    "placements",
+    "interview",
+    "cgpa",
+    "grades",
+    "marks",
+    "semester",
+    "college pressure",
+    "study pressure",
+    "failed",
+    "failure"
+  ];
+
+  // ==========================
+  // RELATIONSHIP STRESS
+  // ==========================
+
+  const relationshipWords = [
+    "breakup",
+    "break up",
+    "heartbroken",
+    "relationship",
+    "cheated",
+    "betrayed",
+    "ghosted",
+    "ignored",
+    "rejected",
+    "toxic relationship"
+  ];
+
+  // ==========================
+  // POSITIVE WORDS
+  // ==========================
 
   const positiveWords = [
     "happy",
     "great",
     "amazing",
+    "awesome",
+    "fantastic",
+    "good",
     "excited",
     "motivated",
     "confident",
     "peaceful",
-    "grateful"
+    "grateful",
+    "thankful",
+    "blessed",
+    "content",
+    "relaxed",
+    "hopeful",
+    "optimistic",
+
+    // Gen Z
+
+    "slaying",
+    "thriving",
+    "living my best life",
+    "feeling good",
+    "doing well",
+    "doing great",
+    "productive",
+    "energized",
+    "winning",
+    "vibing",
+    "chilling",
+    "feeling myself",
+    "locked in",
+    "on track"
   ];
+
+  // ==========================
+  // DETECTION
+  // ==========================
 
   const hasCrisis =
     crisisWords.some(word =>
@@ -62,71 +202,122 @@ const detectSentiment = (text) => {
       lowerText.includes(word)
     );
 
+  const hasAcademicStress =
+    academicStressWords.some(word =>
+      lowerText.includes(word)
+    );
+
+  const hasRelationshipStress =
+    relationshipWords.some(word =>
+      lowerText.includes(word)
+    );
+
   const hasPositive =
     positiveWords.some(word =>
       lowerText.includes(word)
     );
 
-  // Crisis Detection
+  // ==========================
+  // CRISIS
+  // ==========================
+
   if (hasCrisis) {
+
     return {
       sentiment: "negative",
       moodScore: 5,
       stressLevel: "Critical",
     };
+
   }
 
-  // High Stress
-  if (hasStress && score < 0) {
+  // ==========================
+  // HIGH STRESS
+  // ==========================
+
+  if (
+    hasStress ||
+    hasAcademicStress ||
+    hasRelationshipStress
+  ) {
+
     return {
       sentiment: "negative",
       moodScore: 25,
       stressLevel: "High",
     };
+
   }
 
-  // Very Negative
+  // ==========================
+  // VERY NEGATIVE
+  // ==========================
+
   if (score <= -0.5) {
+
     return {
       sentiment: "negative",
       moodScore: 20,
       stressLevel: "High",
     };
+
   }
 
-  // Negative
+  // ==========================
+  // NEGATIVE
+  // ==========================
+
   if (score < 0) {
+
     return {
       sentiment: "negative",
       moodScore: 40,
       stressLevel: "Medium",
     };
+
   }
 
-  // Strong Positive
-  if (score >= 0.6 || hasPositive) {
+  // ==========================
+  // VERY POSITIVE
+  // ==========================
+
+  if (
+    score >= 0.6 ||
+    hasPositive
+  ) {
+
     return {
       sentiment: "positive",
       moodScore: 90,
       stressLevel: "Low",
     };
+
   }
 
-  // Positive
+  // ==========================
+  // POSITIVE
+  // ==========================
+
   if (score > 0) {
+
     return {
       sentiment: "positive",
       moodScore: 75,
       stressLevel: "Low",
     };
+
   }
 
-  // Neutral
+  // ==========================
+  // NEUTRAL
+  // ==========================
+
   return {
     sentiment: "neutral",
     moodScore: 55,
     stressLevel: "Medium",
   };
+
 };
 
 
